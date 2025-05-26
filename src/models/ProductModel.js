@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema(
         selled: {type: Number},
     },
     { 
-        timestamps: true //thời gian tạo và update
+        timestamps: true,
     }
 );
 

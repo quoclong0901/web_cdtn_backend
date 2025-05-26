@@ -21,8 +21,6 @@ const generalRefreshToken = async (payload) => {
     return refresh_token
 }
 
-//CHECK QUYỀN: CHỈ USER ADMIN MỚI CÓ THỂ XÓA USER
-
 const refreshTokenJwtService = (token) => {
     return new Promise((resolve, reject) => {
 

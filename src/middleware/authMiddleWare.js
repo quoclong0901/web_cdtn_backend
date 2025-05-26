@@ -22,9 +22,6 @@ const authMiddleWare = (req, res, next) => {
                 status: "ERR"
             })
         }
-
-        // const {payload} = user
-
         if(user?.isAdmin) {
             next()
         }else {
@@ -37,9 +34,7 @@ const authMiddleWare = (req, res, next) => {
     });
 }
 
-// cấp access token mới khi ACCESS_TOKEN hết hạn
 const authUserMiddleWare = (req, res, next) => {
-
     const authHeader = req.headers.token;
 
     if (!authHeader ) {
@@ -59,8 +54,6 @@ const authUserMiddleWare = (req, res, next) => {
                 status: "ERR"
             })
         }
-
-        // const {payload} = user
 
         if(user?.isAdmin || user?.id === userId) {
             next()

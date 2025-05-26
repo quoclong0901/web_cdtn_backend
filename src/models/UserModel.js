@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
         avatar: { type: String},
     },
     { 
-        timestamps: true //thời gian tạo và update
+        timestamps: true,
     }
 );
 

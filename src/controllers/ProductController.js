@@ -1,6 +1,4 @@
-//Controller là nơi nhận request từ routes, sau đó gọi service để xử lý logic.
 const ProductService = require("../services/ProductService")
-
 const createProduct = async (req, res) => {
     try {
         const { name, image, type, price, countInStock, rating, description, discount } = req.body

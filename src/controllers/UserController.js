@@ -1,4 +1,3 @@
-//Controller là nơi nhận request từ routes, sau đó gọi service để xử lý logic.
 const UserService = require("../services/UserService")
 const JwtService = require("../services/JwtService")
 
@@ -24,17 +23,12 @@ const createUser = async (req, res) => {
                 message:'The password is not equal confirmPassword'
             })
         }
-
-        const response = await UserService.createUser(req.body) // nếu check ok hết thì db sẽ chuyển qua service
-        
+        const response = await UserService.createUser(req.body)
         return res.status(200).json(response)
-
-
     } catch (e) {
         return res.status(404).json({
             message: e
         })
-
     }
 }
 
@@ -56,7 +50,7 @@ const loginUser = async (req, res) => {
             })
         }
 
-        const response = await UserService.loginUser(req.body) // nếu check ok hết thì db sẽ chuyển qua service
+        const response = await UserService.loginUser(req.body)
 
         const { refresh_token, ...newResponse } = response
         
