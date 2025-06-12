@@ -67,8 +67,24 @@ const authUserMiddleWare = (req, res, next) => {
     });
 }
 
- 
+const verifyToken = (req, res, next) => {
+    const authHeader = req.headers.token;
+    if (!authHeader) {
+        return res.status(401).json({ message: "No token provided", status: "ERR" });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
+        if (err) {
+            return res.status(403).json({ message: "Invalid or expired token", status: "ERR" });
+        }
+        req.user = user;
+        next();
+    });
+}; 
 module.exports = {
     authMiddleWare,
-    authUserMiddleWare
+    authUserMiddleWare,
+    verifyToken
 }
