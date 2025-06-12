@@ -1,4 +1,4 @@
-const commentService = require('../services/commentService');
+import { createComment as _createComment, getCommentsByProduct as _getCommentsByProduct, getAllComments as _getAllComments, deleteComment as _deleteComment, updateComment as _updateComment } from '../services/CommentService';
 const CommentController = {
     async createComment(req, res) {
         try {
@@ -15,7 +15,7 @@ const CommentController = {
             if (commentData.rating < 1 || commentData.rating > 5) {
                 return res.status(400).json({ message: 'Rating must be between 1 and 5' });
             }
-            const comment = await commentService.createComment(commentData);
+            const comment = await _createComment(commentData);
             res.status(201).json({
                 message: 'Comment created successfully',
                 rating: comment.rating,
@@ -30,7 +30,7 @@ const CommentController = {
         try {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
-            const comments = await commentService.getCommentsByProduct(req.params.productId, page, limit);
+            const comments = await _getCommentsByProduct(req.params.productId, page, limit);
             res.status(200).json(comments);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -41,7 +41,7 @@ const CommentController = {
         try {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
-            const comments = await commentService.getAllComments(page, limit);
+            const comments = await _getAllComments(page, limit);
             res.status(200).json(comments);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -52,7 +52,7 @@ const CommentController = {
     async deleteComment(req, res) {
         try {
             const userId = req.user.id; 
-            const deletedComment = await commentService.deleteComment(req.params.commentId, userId);
+            const deletedComment = await _deleteComment(req.params.commentId, userId);
             if (!deletedComment) {
                 return res.status(404).json({ message: 'Comment not found' });
             }
@@ -73,7 +73,7 @@ const CommentController = {
                 rating: req.body.rating,
                 commentText: req.body.commentText
             };
-            const updatedComment = await commentService.updateComment(commentId, userId, updateData);
+            const updatedComment = await _updateComment(commentId, userId, updateData);
             res.status(200).json({
                 message: 'Comment updated successfully',
                 rating: updatedComment.rating,
@@ -84,4 +84,4 @@ const CommentController = {
         }
     }
 };
-module.exports = CommentController;
+export default CommentController;
