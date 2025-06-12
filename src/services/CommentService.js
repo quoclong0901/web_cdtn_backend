@@ -59,7 +59,7 @@ const CommentService = {
     async deleteComment(commentId, userId) {
         try {
             const comment = await Comment.findOne({ _id: commentId, user: userId });
-            console.log(userId);
+    
             if (!comment) {
                 throw new Error('Comment not found or you do not have permission to delete it');
             }
