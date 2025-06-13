@@ -5,7 +5,6 @@ dotenv.config()
 const authMiddleWare = (req, res, next) => {
 
     const authHeader = req.headers.token;
-
     if (!authHeader ) {
         return res.status(401).json({
             message: "No token provided",
