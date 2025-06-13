@@ -1,4 +1,4 @@
-const Comment = require('../models/commentModel');
+const Comment = require('../models/CommentModel');
 const mongoose = require('mongoose'); 
 const CommentService = {
     async createComment(commentData) {
