@@ -35,27 +35,6 @@ const CommentService = {
         }
     },
 
-    async getAllComments(page=1, limit=10) {
-      try {
-            const skip = (page - 1) * limit;
-            const comments = await Comment.find()
-                .populate('user', 'avatar name')
-                .sort({ createdAt: -1 })
-                .skip(skip)
-                .limit(limit);
-            const totalComments = await Comment.countDocuments();
-            const totalPages = Math.ceil(totalComments / limit);
-            return {
-                totalComments,
-                totalPages,
-                currentPage: page,
-                comments
-            };
-        } catch (error) {
-            throw new Error('Error fetching all comments: ' + error.message);
-        }
-    },
-
     async deleteComment(commentId, userId) {
         try {
             const comment = await Comment.findOne({ _id: commentId, user: userId });
@@ -80,8 +59,42 @@ const CommentService = {
         } catch (error) { 
             throw new Error('Error updating comment: ' + error.message);
         }
-    }
+    },
 
+    // Admin Delete Comment
+    async adminDeleteComment(commentId) {
+        try {
+            const comment = await Comment.findById(commentId);
+            if (!comment) {
+                throw new Error('Comment not found');
+            }
+            return await Comment.findByIdAndDelete(commentId);
+        }
+        catch (error) {
+            throw new Error('Error deleting comment: ' + error.message);
+        }
+    },
+
+        async getAllComments(page=1, limit=10) {
+      try {
+            const skip = (page - 1) * limit;
+            const comments = await Comment.find()
+                .populate('user product', 'name email productName')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit);
+            const totalComments = await Comment.countDocuments();
+            const totalPages = Math.ceil(totalComments / limit);
+            return {
+                totalComments,
+                totalPages,
+                currentPage: page,
+                comments
+            };
+        } catch (error) {
+            throw new Error('Error fetching all comments: ' + error.message);
+        }
+    }
 
 };
 module.exports = CommentService;

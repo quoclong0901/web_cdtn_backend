@@ -34,23 +34,11 @@ const CommentController = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
-    },
-
-    async getAllComments(req, res) {
-        try {
-            const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
-            const comments = await commentService.getAllComments(page, limit);
-            res.status(200).json(comments);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    },
-    
+    },    
 
     async deleteComment(req, res) {
         try {
-            const userId = req.user.id; 
+            const userId = req.user.id;     
             const deletedComment = await commentService.deleteComment(req.params.commentId, userId);
             if (!deletedComment) {
                 return res.status(404).json({ message: 'Comment not found' });
@@ -81,6 +69,37 @@ const CommentController = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
-    }
+    },
+
+    // Admin methods
+    async adminDeleteComment(req, res) {
+        try {
+            const commentId = req.params.commentId;
+            console.log('Admin deleting comment with ID:', commentId);
+            console.log(112)
+            if (!commentId) {
+                return res.status(400).json({ message: 'Comment ID is required' });
+            }
+            const deletedComment = await commentService.adminDeleteComment(commentId);
+            if (!deletedComment) {
+                return res.status(404).json({ message: 'Comment not found' });
+            }
+            res.status(200).json({ message: 'Comment deleted successfully' });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+        async getAllComments(req, res) {
+        try {
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+            const comments = await commentService.getAllComments(page, limit);
+            res.status(200).json(comments);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
 };
 module.exports = CommentController;
