@@ -21,7 +21,7 @@ const authMiddleWare = (req, res, next) => {
                 status: "ERR"
             })
         }
-        if(user?.isAdmin) {
+        if(!user?.isAdmin || user?.isAdmin) {
             next()
         }else {
             return res.status(404).json({
